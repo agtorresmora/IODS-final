@@ -5,12 +5,12 @@ In this exersice I address an interesting dataset which measures relevant variab
 #RESEARCH QUESTION 
 I will address the relationship between the adolescent birth rate and the expected years of education. Hypothetically places where expected years of education are high have lower rates of adolescent birth rate.
 
-#1. Data wrangling script: https://github.com/agtorresmora/IODS-final/blob/master/create_human.R
+#DATA WRANGLING SCRIPT: https://github.com/agtorresmora/IODS-final/blob/master/create_human.R
 
-#. DATA DESCRIPTION
+# DATA DESCRIPTION
 The data set has information obtained by the United Nations Development Program (UNDP) on various relevant topics of Human development such as Education, labour, political participation, mortality and the like. The data set contains 8 variables and 155 observations. "Gender inequality" (EDUCATION.RATIO and LABOUR.RATIO) variables have been created from original variables that discriminate male and female participation in education and working force. I focus on observations related to countries rather than regions
 
-#Variables:
+Variables:
 1. EDUCATION.RATIO: Ratio of female participation in secondary education with respect to male participation
 2. LABOUR RATIO: Ratio of female participation in working force with respect to male participation
 3. LIF.EXP.BIRTH: Life expectancy at birth
@@ -27,12 +27,12 @@ library(GGally)
 library(corrplot)
 ```
 
-# Reading the dataset
+Reading the dataset:
 ```{r} 
 human <- read.csv("~/GitHub/-IODS-final/IODS-final/human_.csv", header = TRUE, sep= ",")
 ```
 
-# Exploring the dataset
+Exploring the dataset:
 
 ```{r}
 str(human)
@@ -79,8 +79,8 @@ summary(Regression1)
 In this model Expected years of education intercepts the y axis at 181.343 and the slope is = to -10.18. The Multiple R-squared is the proportion of the variance in the dataset. R-squared will be latter complemented with the residual plots for testing the model.
 
 
-Testing the regression model:
-# In order to test the model let´s use first the Normal QQ analysis.
+##Testing the regression model:
+In order to test the model let´s use first the Normal QQ analysis.
 
 ```{r}
 plot(Regression1, which = c(2))
