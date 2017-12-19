@@ -1,6 +1,6 @@
 ---
 title: "Final assignment"
-author: "ALVARO GERMAN TORRES MORA"
+author: "ALVARO GERMAN TORRES MORA, email: alvaro.torres@helsinki.fi, December 18, 2017"
 output:
   html_document:
     theme: cosmo

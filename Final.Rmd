@@ -1,20 +1,24 @@
-#  Final Assignment
-#Álvaro Germán Torres Mora. December 18, 2017. email: alvaro.torres@helsinki.fi
+
+#ABSTRACT
+In this exersice I address an interesting dataset which measures relevant variables in terms of human development. I graphically explore the information and analyse it by using a linear regressional model that will be tested for proving its validity.
+
+#RESEARCH QUESTION 
+I will address the relationship between the adolescent birth rate and the expected years of education. Hypothetically places where expected years of education are high have lower rates of adolescent birth rate.
 
 #1. Data wrangling script: https://github.com/agtorresmora/IODS-final/blob/master/create_human.R
 
-#2. DATA DESCRIPTION
-. The data set has information obtained by the United Nations Development Program (UNDP) on various relevant topics of Human development such as Education, labour, political participation, mortality and the like. The data set contains 8 variables and 155 observations. "Gender inequality" (EDUCATION.RATIO and LABOUR.RATIO) variables have been created from original variables that discriminate male and female participation in education and working force. I focus on observations related to countries rather than regions
+#. DATA DESCRIPTION
+The data set has information obtained by the United Nations Development Program (UNDP) on various relevant topics of Human development such as Education, labour, political participation, mortality and the like. The data set contains 8 variables and 155 observations. "Gender inequality" (EDUCATION.RATIO and LABOUR.RATIO) variables have been created from original variables that discriminate male and female participation in education and working force. I focus on observations related to countries rather than regions
 
 #Variables:
-#1. EDUCATION.RATIO: Ratio of female participation in secondary education with respect to male participation
-#2. LABOUR RATIO: Ratio of female participation in working force with respect to male participation
-#3. LIF.EXP.BIRTH: Life expectancy at birth
-#4. EXPECT.EDUCATION: Expected years of education
-#5. GNIDEF: Gross National Income
-#6. MAT.MORT.RATIO: Maternal morality ratio
-#7. ADOL.BIRTH.RATE: Rate of adolescent birth
-#8. REPRF.PARLIAMENT: female participation in the parliament
+1. EDUCATION.RATIO: Ratio of female participation in secondary education with respect to male participation
+2. LABOUR RATIO: Ratio of female participation in working force with respect to male participation
+3. LIF.EXP.BIRTH: Life expectancy at birth
+4. EXPECT.EDUCATION: Expected years of education
+5. GNIDEF: Gross National Income
+6. MAT.MORT.RATIO: Maternal morality ratio
+7. ADOL.BIRTH.RATE: Rate of adolescent birth
+8. REPRF.PARLIAMENT: female participation in the parliament
 
 ```{r}
 library(ggplot2)
@@ -36,29 +40,34 @@ dim(human)
 ```
 
 # GRAPHICAL OVERVIEW OF THE DATASET
-#Pair overview:
-
+Pair overview:
 ```{r}
 Graph1 <- ggpairs(human, mapping = aes( alpha = 0.7), lower = list(combo = wrap("facethist", bins = 20)))
 Graph1
 ```
-#The graph is useful for stating correlations between variables. The closer the figure is to 1 the higher the correlation is and the closer to 0 the lowest it is. For example, Maternal mortality ratio is also highly correlated to adolescent birth rate(0.759). This confirms the studies that suggest that the places where women are more likely to die when giving a birth also perform badly in terms of social policies for preventing adolescent pregnancy.
+The graph is useful for stating correlations between variables. The closer the figure is to 1 the higher the correlation is and the closer to 0 the lowest it is. For example, Maternal mortality ratio is also highly correlated to adolescent birth rate(0.759). This confirms the studies that suggest that the places where women are more likely to die when giving a birth also perform badly in terms of social policies for preventing adolescent pregnancy.
 
-#Correlating
+Correlating:
 ```{r}
 cor_matrix<-cor(human)
 cor_matrix %>% round(digits=2)
 ```
 
-#Ploting the correlation:
+Ploting the correlation:
 ```{r}
 corrplot(cor_matrix,method="color")
 ```
-#The darker blue the relation, the higher the correlation. This graph confirms the high correlation between Maternal mortality ratio and adolescent birth rate. Additionally, those places with the higher mortality ratio are negatively correlated to life expectancy at birth. This confirms the widely accepted fact according to which places where more women die while giving a birth have low expectancy at birth.
+The darker blue the relation, the higher the correlation. This graph confirms the high correlation between Maternal mortality ratio and adolescent birth rate. Additionally, those places with the higher mortality ratio are negatively correlated to life expectancy at birth. This confirms the widely accepted fact according to which places where more women die while giving a birth have low expectancy at birth.
+
+A previous regression:
+```{r}
+qplot(ADOL.BIRTH.RATE, EXPECT.EDUCATION, data = human) + geom_smooth(method = "lm")
+```
+As expected, countries with high levels of education have lower rates of adolescent births. Let´s go deeper by means of a linear regression analysis.
 
 #THE METHOD
-#Linear regression
-#I will do a linear regression using Adolescent birth rate as the target variable and Expected education as the explanatory one. In this model I assume that: 1. Adolescent birth rate is modelled as a combinations of the rest of parameters; 2, there is no correlation in errors, which are normally distributed and whose variance is constant.
+Linear regression:
+I will do a linear regression using Adolescent birth rate as the target variable and Expected education as the explanatory one. In this model I assume that: 1. Adolescent birth rate is modelled as a combinations of the rest of parameters; 2, there is no correlation in errors, which are normally distributed and whose variance is constant.
 
 
 ```{r}
@@ -67,21 +76,24 @@ Regression1 <- lm(ADOL.BIRTH.RATE ~ EXPECT.EDUCATION, data = human)
 summary(Regression1)
 
 ```
-#In this regreesion model the Multiple R-squared is the proportion of the variance in the dataset. R-squared will be latter complemented with the residual plots for testing the model.
+In this model Expected years of education intercepts the y axis at 181.343 and the slope is = to -10.18. The Multiple R-squared is the proportion of the variance in the dataset. R-squared will be latter complemented with the residual plots for testing the model.
 
 
-# Plotting the regression model:
+Testing the regression model:
 # In order to test the model let´s use first the Normal QQ analysis.
 
 ```{r}
 plot(Regression1, which = c(2))
 ```
 
-# According to Normal QQ-polt the linear model has errors normally distributed, so satisfying one of the previous assumptions
+According to Normal QQ-polt the linear model has errors normally distributed, so satisfying one of the previous assumptions
 
-#Let´s now use the residuals vs leverage analysis
+Let´s now use the residuals vs leverage analysis
 ```{r}
 plot(Regression1, which = c(5))
 ```
 
-#The graph shows that errors are below 0.5 and even most of them are below 0.2, which allows one to trust the model.
+The graph shows that errors are below 0.5 and even most of them are below 0.2, which allows one to trust the model.
+
+#CONCLUSIONS
+In this exercise I have addressed an interesting dataset on Human Development issued by UN, showing correlation between different variables. I focused on analysing the interaction between Adolescent birth rates and expected years of education finding a negative correlation between the two variables (countries with lower average education have higher rates of adolescent births). This was studied by means of a linear regression model which demonstrated to be convenient after its testing by using quantiles and leverage vs residuals.
